@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Current_Coverage_Plan__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Single plan currently used to calculate this unit&apos;s live Case coverage position.</description>
+    <label>Current Coverage Plan</label>
+    <referenceTo>Coverage_Plan__c</referenceTo>
+    <relationshipLabel>Equipment</relationshipLabel>
+    <relationshipName>Equipment</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

@@ -1,12 +1,24 @@
-| Decision | Use this value or rule |
-| --- | --- |
-| Regions | `Benelux`, `DACH`, `Nordics` |
-| Country mapping | Benelux: BE/NL/LU; DACH: DE/AT/CH; Nordics: DK/FI/IS/NO/SE |
-| Unknown country or unmatched email | Send to a **Needs Triage** queue; never guess a region |
-| Case function | Standard Case **Type**: `Technical` or `Billing`; record types and layouts follow on Day 4 |
-| Deal health | Open Opportunity aged **30 days or more** = `At Risk`; otherwise `Healthy` |
-| Effort report buckets | Short: up to 4 hours; Standard: over 4 through 16; Long: over 16 |
-| Coverage | A unit may have multiple plans **over time**, but only one selected active plan at once. Do not activate overlapping coverage for that unit. |
-| Plan activation | A person reviews and activates a Draft plan. Activation is allowed only within its start/end dates and updates each linked unit’s current-plan lookup. |
-| Expiry | The Case formula uses `TODAY()`, so its displayed position changes when the date passes without a scheduling job. The current-plan lookup stays on the expired plan until a replacement is activated. |
-| Junk | Start with a narrow, documented test rule, such as the subject prefix `TEST-JUNK:`; expand only after proving that real cases are unaffected. |
+# Helios Day 1 decisions
+
+## Values
+Regions: Unknown, Benelux, DACH, Nordics, Other
+Equipment types: Generator, Compressor, Pump, HVAC Unit, Other
+Deal Health: An open Opportunity is At Risk after 30 days.
+
+## Coverage
+Only an Active plan within its start and end dates is Covered.
+Each Equipment record has one Current Coverage Plan reference.
+An expired plan stays referenced so its Case can show Expired.
+
+## Org availability
+Agentforce Agents: [Available]
+Prompt Builder: [Available]
+Knowledge Settings: [Available]
+Email-to-Case: [Available]
+Web-to-Lead: [Available]
+Web-to-Case: [Available]
+
+## Later work
+Finish dispatcher/manager sharing and persona tests.
+Set and test Cost and Margin access.
+Maintain the Current Coverage Plan when plans change.

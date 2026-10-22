@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Coverage_Status__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(
+  OR(
+    ISBLANK(Equipment__c),
+    ISBLANK(Equipment__r.Current_Coverage_Plan__c)
+  ),
+  &quot;Not Covered&quot;,
+  IF(
+    AND(
+      TEXT(Equipment__r.Current_Coverage_Plan__r.Status__c) = &quot;Active&quot;,
+      Equipment__r.Current_Coverage_Plan__r.Start_Date__c &lt;= TODAY(),
+      Equipment__r.Current_Coverage_Plan__r.End_Date__c &gt;= TODAY()
+    ),
+    &quot;Covered&quot;,
+    IF(
+      OR(
+        TEXT(Equipment__r.Current_Coverage_Plan__r.Status__c) = &quot;Expired&quot;,
+        Equipment__r.Current_Coverage_Plan__r.End_Date__c &lt; TODAY()
+      ),
+      &quot;Expired&quot;,
+      &quot;Not Covered&quot;
+    )
+  )
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Coverage Status</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>
