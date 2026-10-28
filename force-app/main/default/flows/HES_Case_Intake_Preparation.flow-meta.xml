@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>68.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <assignments>
+        <description>Closes the Case and records the existing Spam picklist value so routing and auto-response rules suppress it.</description>
+        <name>Close_Junk_Case</name>
+        <label>Close Junk Case</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Closed</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>$Record.Junk_Reason__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Spam</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>END_ELEMENT_1</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Sets the incoming Case to the HES Billing record type before the Case is saved.</description>
+        <name>Set_Billing_Case_Record_Type</name>
+        <label>Set Billing Case Record Type</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.RecordTypeId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_Billing_Case_Record_Type.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>END_ELEMENT_1</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Sets a blank Case Type to Billing when the subject starts [BILLING].</description>
+        <name>Set_Billing_Type</name>
+        <label>Set Billing Type</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.Type</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Billing</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Choose_Service_Case_Type</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Sets the incoming Case to the HES Technical record type before the Case is saved.</description>
+        <name>Set_Technical_Case_Record_Type</name>
+        <label>Set Technical Case Record Type</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.RecordTypeId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_Technical_Case_Record_Type.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>END_ELEMENT_1</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Sets a blank Case Type to Technical for other genuine incoming Cases.</description>
+        <name>Set_Technical_Type</name>
+        <label>Set Technical Type</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.Type</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Technical</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Choose_Service_Case_Type</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <description>Uses the [BILLING] subject prefix to distinguish Billing from the default Technical intake.</description>
+        <name>Check_Billing_Subject</name>
+        <label>Check Billing Subject</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Set_Technical_Type</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Billing_Subject</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>fIsBilling</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Set_Billing_Type</targetReference>
+            </connector>
+            <label>Billing Subject</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Separates marked junk Cases before normal Type classification.</description>
+        <name>Check_for_Junk</name>
+        <label>Check for Junk</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Check_Missing_Type</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Junk</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>fIsJunk</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Close_Junk_Case</targetReference>
+            </connector>
+            <label>Junk</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Keeps a Type already submitted by the web form; classifies only Cases whose Type is blank.</description>
+        <name>Check_Missing_Type</name>
+        <label>Check Missing Type</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Choose_Service_Case_Type</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Type_Missing</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Type</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Check_Billing_Subject</targetReference>
+            </connector>
+            <label>Type Missing</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Uses the Case Type after intake classification to select the Technical or Billing Case record type.</description>
+        <name>Choose_Service_Case_Type</name>
+        <label>Choose Service Case Type</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>END_ELEMENT_1</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Billing</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Billing</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Billing_Case_Record_Type</targetReference>
+            </connector>
+            <label>Billing</label>
+        </rules>
+        <rules>
+            <name>Technical</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Technical</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Technical_Case_Record_Type</targetReference>
+            </connector>
+            <label>Technical</label>
+        </rules>
+    </decisions>
+    <description>On Case creation, closes subjects marked [JUNK] and records Spam; otherwise fills a missing Case Type as Billing or Technical before routing and acknowledgement.</description>
+    <ends>
+        <name>END_ELEMENT_1</name>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+    </ends>
+    <environments>Default</environments>
+    <formulas>
+        <description>True when the Case subject begins with [BILLING], ignoring letter case.</description>
+        <name>fIsBilling</name>
+        <dataType>Boolean</dataType>
+        <expression>BEGINS(UPPER(TRIM({!$Record.Subject})), &quot;[BILLING]&quot;)</expression>
+    </formulas>
+    <formulas>
+        <description>True when the Case subject begins with [JUNK], ignoring letter case.</description>
+        <name>fIsJunk</name>
+        <dataType>Boolean</dataType>
+        <expression>BEGINS(UPPER(TRIM({!$Record.Subject})), &quot;[JUNK]&quot;)</expression>
+    </formulas>
+    <interviewLabel>HES Case Intake Preparation {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>HES Case Intake Preparation</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <description>Finds the active HES Billing Case record type without storing an org-specific ID in the Flow.</description>
+        <name>Get_Billing_Case_Record_Type</name>
+        <label>Get Billing Case Record Type</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Set_Billing_Case_Record_Type</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>SobjectType</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Case</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>HES_Billing</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>IsActive</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>RecordType</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Finds the active HES Technical Case record type.</description>
+        <name>Get_Technical_Case_Record_Type</name>
+        <label>Get Technical Case Record Type</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Set_Technical_Case_Record_Type</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>SobjectType</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Case</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>HES_Technical</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>IsActive</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>RecordType</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Check_for_Junk</targetReference>
+        </connector>
+        <object>Case</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>
