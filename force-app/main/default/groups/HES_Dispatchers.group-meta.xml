@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Group xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Dispatchers who need access to open service Cases.</description>
+    <doesIncludeBosses>true</doesIncludeBosses>
+    <name>HES Dispatchers</name>
+</Group>

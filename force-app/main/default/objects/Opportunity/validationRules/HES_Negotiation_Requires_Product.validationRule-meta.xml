@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HES_Negotiation_Requires_Product</fullName>
+    <active>true</active>
+    <description>Requires at least one Opportunity Product before an Opportunity can be in Negotiation/Review.</description>
+    <errorConditionFormula>AND(
+    ISPICKVAL(StageName, &quot;Negotiation/Review&quot;),
+    OR(
+        ISBLANK(Pricebook2Id),
+        NOT(HasOpportunityLineItem)
+    )
+)</errorConditionFormula>
+    <errorDisplayField>StageName</errorDisplayField>
+    <errorMessage>Add at least one Opportunity Product before moving to Negotiation/Review.</errorMessage>
+</ValidationRule>

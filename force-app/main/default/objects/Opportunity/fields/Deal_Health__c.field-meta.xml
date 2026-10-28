@@ -4,12 +4,13 @@
     <description>Shows whether an open Opportunity has reached the project’s 30-day risk threshold.</description>
     <externalId>false</externalId>
     <formula>IF(
-  AND(
-    NOT(IsClosed),
-    TODAY() - DATEVALUE(CreatedDate) &gt;= 30
-  ),
-  &quot;At Risk&quot;,
-  &quot;Healthy&quot;
+    IsClosed,
+    &quot;&quot;,
+    IF(
+        TODAY() - DATEVALUE(CreatedDate) &gt;= 30,
+        &quot;At Risk&quot;,
+        &quot;Healthy&quot;
+    )
 )</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
     <label>Deal Health</label>
