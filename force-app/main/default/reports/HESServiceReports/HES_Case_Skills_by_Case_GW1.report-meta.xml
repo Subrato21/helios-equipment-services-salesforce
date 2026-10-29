@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>Case_Skill__c$Case__c</field>
+    </columns>
+    <columns>
+        <field>Case_Skill__c$Case__c.Type</field>
+    </columns>
+    <columns>
+        <field>Case_Skill__c$Case__c.Region__c</field>
+    </columns>
+    <columns>
+        <field>Case_Skill__c$Case__c.Owner</field>
+    </columns>
+    <columns>
+        <field>Case_Skill__c$Name</field>
+    </columns>
+    <columns>
+        <field>Case_Skill__c$Skill__c</field>
+    </columns>
+    <description>Lists Helios Cases and each skill linked to them.</description>
+    <format>Tabular</format>
+    <name>HES Case Skills by Case</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>HES_Case_Skills__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>Case_Skill__c$CreatedDate</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>
