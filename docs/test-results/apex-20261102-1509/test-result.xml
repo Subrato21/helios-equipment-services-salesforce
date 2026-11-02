@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+    <testsuite name="force.apex" timestamp="2026-11-02T09:09:45.000Z" hostname="https://orgfarm-ede5b98f95-dev-ed.develop.my.salesforce.com" tests="17" failures="0"  errors="0"  time="3.37">
+        <properties>
+            <property name="outcome" value="Successful"/>
+            <property name="testsRan" value="17"/>
+            <property name="passing" value="17"/>
+            <property name="failing" value="0"/>
+            <property name="skipped" value="0"/>
+            <property name="passRate" value="100%"/>
+            <property name="failRate" value="0%"/>
+            <property name="testStartTime" value="Mon Nov 02 2026 3:09:45 PM"/>
+            <property name="testSetupTimeInMs" value="551"/>
+            <property name="testExecutionTime" value="3.37 s"/>
+            <property name="testTotalTime" value="3.92 s"/>
+            <property name="commandTime" value="0.33 s"/>
+            <property name="hostname" value="https://orgfarm-ede5b98f95-dev-ed.develop.my.salesforce.com"/>
+            <property name="orgId" value="00Dg700000JFdxNEAT"/>
+            <property name="username" value="subratochandrapal.d7e15ce44516@agentforce.com"/>
+            <property name="testRunId" value="707g7000016zAku"/>
+            <property name="userId" value="005g700000D064LAAR"/>
+            <property name="coveredLines" value="272"/>
+            <property name="testRunCoverage" value="82%"/>
+            <property name="orgWideCoverage" value="81%"/>
+        </properties>
+        <testcase name="fillsOnlyAvailableDailyHoursAndDoesNotDuplicate" classname="HESDailyCapacityPlannerTest" time="0.68">
+        </testcase>
+        <testcase name="skipsWeekendBetweenTwoDaysOfWork" classname="HESDailyCapacityPlannerTest" time="0.13">
+        </testcase>
+        <testcase name="testCaseWithoutEquipment" classname="HESCoverageReplyPromptServiceTest" time="0.29">
+        </testcase>
+        <testcase name="testCoverageScenariosAndResponseOrder" classname="HESCoverageReplyPromptServiceTest" time="0.99">
+        </testcase>
+        <testcase name="testIdDoesNotIdentifyACase" classname="HESCoverageReplyPromptServiceTest" time="0.04">
+        </testcase>
+        <testcase name="testMissingCaseIds" classname="HESCoverageReplyPromptServiceTest" time="0.01">
+        </testcase>
+        <testcase name="testNullAndEmptyRequests" classname="HESCoverageReplyPromptServiceTest" time="0.01">
+        </testcase>
+        <testcase name="testActiveCoverageAndInclusiveDateBoundaries" classname="HESSerialCoverageActionTest" time="0.49">
+        </testcase>
+        <testcase name="testExactMatchTrimmingAndCaseSensitivity" classname="HESSerialCoverageActionTest" time="0.19">
+        </testcase>
+        <testcase name="testExpiredCoverage" classname="HESSerialCoverageActionTest" time="0.14">
+        </testcase>
+        <testcase name="testFutureCoverageIsNotCovered" classname="HESSerialCoverageActionTest" time="0.14">
+        </testcase>
+        <testcase name="testMissingSerialNumbers" classname="HESSerialCoverageActionTest" time="0.01">
+        </testcase>
+        <testcase name="testMixedBatchPreservesOrderAndDuplicates" classname="HESSerialCoverageActionTest" time="0.19">
+        </testcase>
+        <testcase name="testNullAndEmptyInputs" classname="HESSerialCoverageActionTest" time="0.01">
+        </testcase>
+        <testcase name="testUnknownSerialNumber" classname="HESSerialCoverageActionTest" time="0.02">
+        </testcase>
+    </testsuite>
+</testsuites>
