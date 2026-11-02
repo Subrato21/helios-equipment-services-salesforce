@@ -1,0 +1,14 @@
+{
+  "required" : [ "serialNumber" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "serialNumber" : {
+      "title" : "Serial Number",
+      "description" : "Exact Equipment serial number supplied by the employee.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

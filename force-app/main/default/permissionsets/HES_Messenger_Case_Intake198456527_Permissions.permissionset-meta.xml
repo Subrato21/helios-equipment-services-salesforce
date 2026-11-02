@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Allows custom permissions for Agentforce Agent : HES_Messenger_Case_Intake&apos;s agent user : hes_messenger_case_intake@00dg700000jfdxn1659393232.ext.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>HES_Messenger_Case_Intake198456527 Permissions</label>
+    <license>Einstein Agent</license>
+</PermissionSet>

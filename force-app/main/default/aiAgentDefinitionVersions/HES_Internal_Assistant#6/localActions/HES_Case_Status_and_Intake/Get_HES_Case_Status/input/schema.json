@@ -1,0 +1,14 @@
+{
+  "required" : [ "varInputCaseNumber" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "varInputCaseNumber" : {
+      "title" : "varInputCaseNumber",
+      "description" : "Exact Case Number supplied by the user, including leading zeroes.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

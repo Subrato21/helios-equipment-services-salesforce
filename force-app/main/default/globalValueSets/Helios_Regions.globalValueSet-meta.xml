@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <customValue>
-        <fullName>Unknown</fullName>
-        <default>true</default>
-        <label>Unknown</label>
-    </customValue>
-    <customValue>
         <fullName>Benelux</fullName>
         <default>false</default>
         <label>Benelux</label>
@@ -24,6 +19,11 @@
         <fullName>Other</fullName>
         <default>false</default>
         <label>Other</label>
+    </customValue>
+    <customValue>
+        <fullName>Unknown</fullName>
+        <default>true</default>
+        <label>Unknown</label>
     </customValue>
     <description>Regions used for customer reporting and service routing.</description>
     <masterLabel>Helios Regions</masterLabel>

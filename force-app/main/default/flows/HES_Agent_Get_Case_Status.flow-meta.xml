@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>68.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <assignments>
+        <name>Request_Case_Number</name>
+        <label>Request Case Number</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>varResultMessage</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Please provide the Case Number.</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>END_ELEMENT_1</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Return_Case_Status</name>
+        <label>Return Case Status</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>varOutputCaseNumber</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_Accessible_Case.CaseNumber</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varOutputStatus</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_Accessible_Case.Status</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varResultMessage</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>ttCaseStatusMessage</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>END_ELEMENT_1</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Return_Case_Unavailable</name>
+        <label>Return Case Unavailable</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>varResultMessage</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>I can&apos;t provide a status for that Case Number.</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>END_ELEMENT_1</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Return_Lookup_Unavailable</name>
+        <label>Return Lookup Unavailable</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>varResultMessage</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>I can&apos;t provide a status for that Case Number.</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>END_ELEMENT_2</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>Case_Found</name>
+        <label>Case Found</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Return_Case_Unavailable</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No Accessible Case</defaultConnectorLabel>
+        <rules>
+            <name>Found</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Accessible_Case.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Return_Case_Status</targetReference>
+            </connector>
+            <label>Found</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Requires a Case Number before looking up a Case.</description>
+        <name>Case_Number_Provided</name>
+        <label>Case Number Provided</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Request_Case_Number</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Case Number Missing</defaultConnectorLabel>
+        <rules>
+            <name>Provided</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varInputCaseNumber</leftValueReference>
+                <operator>IsBlank</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Accessible_Case</targetReference>
+            </connector>
+            <label>Provided</label>
+        </rules>
+    </decisions>
+    <description>Returns the Case Number and current Status of one Case the running user can access.</description>
+    <ends>
+        <name>END_ELEMENT_1</name>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+    </ends>
+    <ends>
+        <name>END_ELEMENT_2</name>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+    </ends>
+    <environments>Default</environments>
+    <interviewLabel>HES Agent Get Case Status {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>HES Agent Get Case Status</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <description>Finds one Case with the supplied Case Number, subject to the running user&apos;s access.</description>
+        <name>Get_Accessible_Case</name>
+        <label>Get Accessible Case</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Case_Found</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Return_Lookup_Unavailable</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>CaseNumber</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>varInputCaseNumber</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Case</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Status</queriedFields>
+        <queriedFields>CaseNumber</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <runInMode>UserMode</runInMode>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Case_Number_Provided</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <textTemplates>
+        <name>ttCaseStatusMessage</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Case {!Get_Accessible_Case.CaseNumber} is currently {!Get_Accessible_Case.Status}.</text>
+    </textTemplates>
+    <variables>
+        <description>Exact Case Number supplied by the user, including leading zeroes.</description>
+        <name>varInputCaseNumber</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Case Number of an accessible matching Case.</description>
+        <name>varOutputCaseNumber</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <description>Current Status of an accessible matching Case.</description>
+        <name>varOutputStatus</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <description>Safe status or unavailable message for the conversation.</description>
+        <name>varResultMessage</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+</Flow>

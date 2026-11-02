@@ -1,0 +1,35 @@
+{
+  "required" : [ "varDescription", "varSubject" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "varCustomerEmail" : {
+      "title" : "varCustomerEmail",
+      "description" : "Customer email address if the user supplies one.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "varDescription" : {
+      "title" : "varDescription",
+      "description" : "Details of the service issue. Required before creating a Case.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "varSubject" : {
+      "title" : "varSubject",
+      "description" : "Short description of the service issue. Required before creating a Case",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "varType" : {
+      "title" : "varType",
+      "description" : "Case Type when known. Use exactly Technical or Billing.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}
