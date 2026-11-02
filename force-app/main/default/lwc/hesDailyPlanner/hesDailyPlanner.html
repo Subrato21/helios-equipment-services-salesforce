@@ -1,0 +1,32 @@
+<template>
+    <lightning-card title="HES Daily Work Planner" icon-name="standard:case">
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+            <p class="slds-m-bottom_small">
+                Plan this open Case for your user: 8 hours per weekday, one Work Segment per day.
+            </p>
+            <template lwc:if={showForm}>
+                <lightning-input type="date" label="Earliest work date"
+                    value={firstDay} onchange={changeDate} required>
+                </lightning-input>
+                <lightning-input type="number" label="Work hours" value={effortHours}
+                    min="0.25" max="40" step="0.25" onchange={changeHours} required>
+                </lightning-input>
+                <lightning-button variant="brand" label="Build daily schedule"
+                    onclick={buildSchedule} disabled={busy} class="slds-m-top_small">
+                </lightning-button>
+            </template>
+            <template lwc:if={busy}>
+                <lightning-spinner alternative-text="Building schedule" size="small"></lightning-spinner>
+            </template>
+            <template lwc:if={errorText}>
+                <p role="alert" class="slds-text-color_error slds-m-top_small">{errorText}</p>
+            </template>
+            <template lwc:if={hasSegments}>
+                <p class="slds-m-top_medium">This Case is scheduled. Each row is one day of work.</p>
+                <lightning-datatable key-field="Id" data={segments} columns={columns}
+                    hide-checkbox-column class="slds-m-top_small">
+                </lightning-datatable>
+            </template>
+        </div>
+    </lightning-card>
+</template>
